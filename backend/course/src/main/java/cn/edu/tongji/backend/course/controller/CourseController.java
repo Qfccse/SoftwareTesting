@@ -42,8 +42,7 @@ public class CourseController {
     public ResponseEntity<HashMap<String, Object>> getCourses(@PathVariable String id, @PathVariable String role) {
         if (role.equals("teacher")) {
             return new ResponseEntity<>(courseService.getCoursesAsTeacher(id).getMap(), HttpStatus.OK);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(courseService.getCoursesAsStudent(id).getMap(), HttpStatus.OK);
         }
     }
@@ -63,15 +62,9 @@ public class CourseController {
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
     }
 
-    class Param {
-        public Course course;
-        public Teaches teaches;
-    }
-
-
     //更改课程 名字 描述 状态
     @PutMapping
-    public ResponseEntity<HashMap<String, Object>> updateCourse(@RequestBody Course course){
+    public ResponseEntity<HashMap<String, Object>> updateCourse(@RequestBody Course course) {
         Message message = new Message();
         message.set("course", courseService.updateCourse(course));
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -79,7 +72,7 @@ public class CourseController {
 
     //修改课程描述
     @PostMapping("/labModify")
-    public ResponseEntity<HashMap<String, Object>> updateLab(@RequestBody Laboratory laboratory){
+    public ResponseEntity<HashMap<String, Object>> updateLab(@RequestBody Laboratory laboratory) {
         Message message = new Message();
         message.set("course", courseService.updateLab(laboratory));
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -101,10 +94,11 @@ public class CourseController {
     public ResponseEntity<HashMap<String, Object>> getCourseById(@PathVariable int c_id) {
         Message message = new Message();
         Course course = courseService.getCourseById(c_id);
-        if (course == null) {
+        if (course == null)
+        {
             message.set("status", STATUS.BADPARAM);
-        }
-        else{
+        } else
+        {
             message.set("course", course);
         }
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -114,10 +108,12 @@ public class CourseController {
     public ResponseEntity<HashMap<String, Object>> getLabsByCid(@PathVariable int c_id) {
         Message message;
 
-        if ( c_id > 420203100) {
+        if (c_id > 420203100)
+        {
             message = courseService.getLabsByCid(c_id);
         }
-        else {
+        else
+        {
             message = new Message();
             message.set("status", STATUS.BADPARAM);
         }

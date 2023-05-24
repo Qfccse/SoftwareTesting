@@ -16,9 +16,6 @@ public class TodoService {
         return todoMapper.selectCourseTodo(c_id);
     }
 
-    //public Todo selectTodoById(){
-    //    return todoMapper.
-    //}
 
     public void insertTodo(Todo todo){
         todoMapper.insertCourseTodo(todo);

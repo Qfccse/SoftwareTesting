@@ -1,28 +1,32 @@
-package cn.edu.tongji.backend;
+package cn.edu.tongji.backend.test;
 
 import cn.edu.tongji.backend.test.pojo.User;
+import cn.edu.tongji.backend.test.service.UserService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestDemo {
+@SpringBootTest
+@SpringJUnitConfig(TestApplication.class)
+public class TestApplicationTest {
     public static Triangle triangle;
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
@@ -49,6 +53,7 @@ public class TestDemo {
                 Arguments.of(50, 50, 99, "等腰三角形")
         );
     }
+
     @ParameterizedTest
     @MethodSource("testDataProvider")
     void testWithMethodSource(int a, int b, int c, String tri) {
@@ -98,28 +103,14 @@ public class TestDemo {
 
     // 对象的json
     // 假设执行一个函数，它是从数据库中select 一个 user
-    User selectUserById(String id){
-        User user = new User();
-        user.setId(id);
-        if(Objects.equals(id, "1")){
-            user.setName("abc");
-            user.setAge(12);
-        }
-        if(Objects.equals(id, "2")){
-            user.setName("asd");
-            user.setAge(18);
-        }
-        if(Objects.equals(id, "3")){
-            user.setName("qaz");
-            user.setAge(22);
-        }
-        return user;
-    }
+    @Autowired
+    private UserService userService;
     @ParameterizedTest
     @MethodSource("userDataProvider")
     void userTest(String id,User user) {
         // System.out.println(user);
-        assertEquals(user, selectUserById(id));
+        // 这个测试应该是前两个通过，最后一个不通过
+        assertEquals(user, userService.selectUserById(id));
     }
     static String USER_JSON_FILE_PATH = "src/main/resources/UserTest.json";
     static Stream<Arguments> userDataProvider() throws IOException {
@@ -128,7 +119,7 @@ public class TestDemo {
         return jsonArray.stream()
                 .map(obj -> {
                     JSONObject jsonObj = (JSONObject) obj;
-                    String id = jsonObj.getString("id");
+                    String id = jsonObj.getString("u_id");
                     User user = jsonObj.getObject("User",User.class);
                     return Arguments.of(id,user);
                 });

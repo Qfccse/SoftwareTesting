@@ -1,26 +1,35 @@
 [
   {
-    "id": "1",
+    "u_id": "04354",
     "User": {
-      "id": "1",
-      "name": "abc",
-      "age": 12
+      "u_id": "04354",
+      "name": "胡老师",
+      "password": "04354",
+      "status": 1,
+      "role": 2,
+      "email": "04354@tongji.edu.cn"
     }
   },
   {
-    "id": "2",
+    "u_id": "06403",
     "User": {
-      "id": "2",
-      "name": "asd",
-      "age": 18
+      "u_id": "06403",
+      "name": "张老师",
+      "password": "06403",
+      "status": 1,
+      "role": 2,
+      "email": "06403@tongji.edu.cn"
     }
   },
   {
-    "id": "3",
+    "u_id": "1952168",
     "User": {
-      "id": "3",
-      "name": "qaz",
-      "age": 22
+      "u_id": "1952168",
+      "name": "张宇",
+      "password": "1952168",
+      "status": 1,
+      "role": 2,
+      "email": "1952168@tongji.edu.cn"
     }
   }
 ]

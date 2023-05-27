@@ -1,4 +1,4 @@
-package cn.edu.tongji.backend;
+package cn.edu.tongji.backend.test;
 
 public class Triangle {
     public String judgeTriangle(int a,int b,int c){

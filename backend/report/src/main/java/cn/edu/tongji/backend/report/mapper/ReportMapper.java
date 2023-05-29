@@ -20,7 +20,7 @@ public interface ReportMapper {
     Report selectReportById(int l_id, String s_id);
 
     @Select("select r_id from report where l_id=#{l_id} and s_id=#{s_id};")
-    int selectIdFromReport(int l_id, String s_id);
+    Integer selectIdFromReport(int l_id, String s_id);
 
     @Select("select count(r_id) from report  where l_id=#{l_id} and s_id=#{s_id}")
     int selectCountFromReport(int l_id, String s_id);

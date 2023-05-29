@@ -22,33 +22,7 @@ public class UserController {
 
     @PostMapping(value = "/userLogin")
     public Result<User> login(@RequestParam("u_id") String u_id, @RequestParam("password") String password){
-        System.out.println(u_id + " " + password);
-        Result<User> result = new Result<>();
-        try {
-            if (userService.countUser(u_id)==0)
-            {
-                result.setMsg("uid错误");
-                result.setErrorCode(1);
-            }
-            else if (userService.checkPassword(u_id,password)==null){
-                result.setMsg("密码错误");
-                result.setErrorCode(2);
-            }
-            else if(userService.selectUserStatus(u_id)!=1){
-                result.setMsg("未激活");
-                result.setErrorCode(3);
-            }
-            else {
-                result.setMsg("登陆成功");
-                result.setErrorCode(0);
-                result.setDetail(userService.selectUserInfo(u_id));
-            }
-        } catch (Exception e) {
-            result.setMsg(e.getMessage());
-            e.printStackTrace();
-        }
-
-        return result;
+        return userService.login(u_id,password);
     }
 
     @PostMapping("/changePassword")

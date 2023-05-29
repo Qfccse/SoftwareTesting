@@ -119,6 +119,7 @@ public class CourseService {
     }
 
 
+    // 不用测、重复了
     public Message getLabsByCid(int c_id) {
         Message message = new Message();
         message.set("labs", laboratoryMapper.getLabsByCid(c_id));

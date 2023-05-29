@@ -1,5 +1,6 @@
 package cn.edu.tongji.backend.login.service;
 
+import cn.edu.tongji.backend.login.pojo.Result;
 import cn.edu.tongji.backend.login.pojo.User;
 import cn.edu.tongji.backend.login.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ public class UserService {
     private UserMapper userMapper;
     /**
      * 登录
-     * @param user 用户名和密码
+     * @param u_id ,password
      * @return Result
      */
     public String checkPassword(String u_id, String password) {
@@ -21,6 +22,36 @@ public class UserService {
 
     public int countUser(String u_id){
         return userMapper.countUser(u_id);
+    }
+
+    public Result<User> login(String u_id, String password){
+        System.out.println(u_id + " " + password);
+        Result<User> result = new Result<>();
+        try {
+            if (countUser(u_id)==0)
+            {
+                result.setMsg("uid错误");
+                result.setErrorCode(1);
+            }
+            else if (checkPassword(u_id,password)==null){
+                result.setMsg("密码错误");
+                result.setErrorCode(2);
+            }
+            else if(selectUserStatus(u_id)!=1){
+                result.setMsg("未激活");
+                result.setErrorCode(3);
+            }
+            else {
+                result.setMsg("登陆成功");
+                result.setErrorCode(0);
+                result.setDetail(selectUserInfo(u_id));
+            }
+        } catch (Exception e) {
+            result.setMsg(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
     }
     /**
      * 更改密码

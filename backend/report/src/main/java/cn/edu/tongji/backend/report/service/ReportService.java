@@ -17,7 +17,7 @@ public class ReportService {
         reportMapper.insertIntoReport(report);
     }
 
-    public int getReportId(int l_id, String s_id){
+    public Integer getReportId(int l_id, String s_id){
         return reportMapper.selectIdFromReport(l_id, s_id);
     }
 

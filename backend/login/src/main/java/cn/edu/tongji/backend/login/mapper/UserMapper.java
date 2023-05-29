@@ -12,14 +12,14 @@ public interface UserMapper {
      * 查询用户名是否存在，若存在，不允许注册
      * 注解@Param(value) 若value与可变参数相同，注解可省略
      * 注解@Results  列名和字段名相同，注解可省略
-     * @param username
+     * @param
      * @return
      */
     @Select("select count(*) from user where u_id = #{u_id}")
     int countUser(String u_id);
 
     @Select("select u_id from user  where user.u_id = #{u_id} and user.password = #{password}")
-    String checkUserPassword(String u_id, String password);
+    String checkUserPassword(@Param("u_id")String u_id, @Param("password")String password);
 
     @Select("select u_id,status,role,name,email from user where u_id=#{u_id}")
     User checkDetail(String u_id);

@@ -4,11 +4,13 @@ import cn.edu.tongji.backend.report.mapper.ReportFormMapper;
 import cn.edu.tongji.backend.report.mapper.ReportMapper;
 import cn.edu.tongji.backend.report.mapper.ReportTemplateMapper;
 import cn.edu.tongji.backend.report.pojo.*;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -140,7 +142,6 @@ public class ReportService {
         }
 
     }
-
     public Result<List<ReportRow>> getReport(int l_id,String s_id){
         Result<List<ReportRow>> result = new Result<>();
         int r_id = getReportId(l_id, s_id);
@@ -169,6 +170,67 @@ public class ReportService {
         }
 
         result.setDetail(reportRows);
+        return result;
+    }
+
+    // test3
+    public Result<Integer> postReportForm(int l_id,String s_id,int status,List<ReportForm> reportForms){
+        List<Integer> ids = new ArrayList<Integer>();
+        Result<Integer> result = new Result<>();
+        result.setMsg("");
+        int r_id = 0;
+        if(s_id.length()!=7){
+            result.setMsg("学号错误");
+            result.setCode(1);
+            return result;
+        }
+        if(status!=0&&status!=1&&status!=2){
+            result.setMsg("状态错误");
+            result.setCode(2);
+            return result;
+        }
+        Timestamp ed= reportMapper.selectLabEndTime(l_id);
+        Timestamp cur = new Timestamp(new Date().getTime());
+        System.out.println(ed);
+        System.out.println(cur);
+        if(cur.after(ed)){
+            result.setCode(3);
+            result.setMsg("实验已截止");
+            return result;
+        }
+        List<Boolean> requires = reportTemplateMapper.selectRequire(l_id);
+        int i=0;
+        for (ReportForm form : reportForms) {
+            if(form.getContent().isEmpty()&&requires.get(i)){
+                result.setMsg("提交了不完整的报告");
+                result.setCode(4);
+                return result;
+            }
+            i++;
+            r_id = form.getR_id();
+            int update = reportFormMapper.selectCountReportFormCheck(form.getR_id(), form.getRt_id());
+            if (update==0)
+            {
+                //System.out.println("insert form");
+                result.appendMsg("1");
+                reportFormMapper.insertIntoReportForm(form);
+            }
+            else {
+                //System.out.println("update form");
+                result.appendMsg("2");
+                form.setRf_id(reportFormMapper.selectRfId(form.getR_id(), form.getRt_id()));
+                reportFormMapper.updateReportForm(form);
+            }
+
+            ids.add(form.getRf_id());
+        }
+
+        Report report = new Report();
+        report.setR_id(r_id);
+        report.setStatus(status);
+        report.setSubmit_time(new Timestamp(new Date().getTime()));
+        updateReportStatus(report);
+
         return result;
     }
 }

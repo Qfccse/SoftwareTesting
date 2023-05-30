@@ -16,4 +16,13 @@ public interface ReportTemplateMapper {
 
     @Select("select count(*) from report_template where l_id=#{l_id}")
     int selectTemplateCount(int l_id);
+
+    @Select("select required from report_template where l_id=#{l_id}")
+    List<Boolean> selectRequire(int l_id);
+
+    @Select("select l_id from laboratory")
+    List<Integer> selectAllLabId();
+
+    @Select("select count(l_id) from teaches left join laboratory l on teaches.c_id = l.c_id where l_id=#{l_id} and teaches.t_id=#{t_id}")
+    Integer checkIfTeaches(int l_id,String t_id);
 }

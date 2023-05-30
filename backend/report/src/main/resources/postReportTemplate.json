@@ -1,0 +1,98 @@
+[
+  {
+    "msg": "t_id格式错误",
+    "ReportTemplate":{
+      "l_id":1,
+      "t_id":"azs",
+      "title":"实验目的",
+      "order":0,
+      "required":false,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "单元标题不能为空",
+    "ReportTemplate": {
+      "l_id":1,
+      "t_id":"06403",
+      "title":"",
+      "order":0,
+      "required":false,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "错误的单元类型",
+    "ReportTemplate":{
+      "l_id":1,
+      "t_id":"06403",
+      "title":"实验目的",
+      "order":0,
+      "required":false,
+      "placeholder": "",
+      "type":"picture"
+    }
+  },
+  {
+    "msg": "授课教师不匹配",
+    "ReportTemplate": {
+      "l_id":1,
+      "t_id":"04354",
+      "title":"实验目的",
+      "order":0,
+      "required":false,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "错误的l_id",
+    "ReportTemplate": {
+      "l_id":1000,
+      "t_id":"06403",
+      "title":"实验目的",
+      "order":0,
+      "required":false,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "创建成功",
+    "ReportTemplate":{
+      "l_id":20,
+      "t_id":"04354",
+      "title":"实验目的",
+      "order":0,
+      "required":true,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "创建成功",
+    "ReportTemplate":{
+      "l_id":20,
+      "t_id":"04354",
+      "title":"实验步骤",
+      "order":1,
+      "required":true,
+      "placeholder": "",
+      "type":"text"
+    }
+  },
+  {
+    "msg": "创建成功",
+    "ReportTemplate":{
+      "l_id":20,
+      "t_id":"04354",
+      "title":"实验结果",
+      "order":2,
+      "required":true,
+      "placeholder": "",
+      "type":"text"
+    }
+  }
+]

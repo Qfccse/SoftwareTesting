@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+//import java.util.stream.Stream;
 /**
  * Unit test for simple App.
  */
@@ -40,6 +41,7 @@ public class AppTest
     void testSelectReport(Integer r_id, String s_id, int l_id){
         assertEquals(r_id,reportService.getReportId(l_id,s_id));
     }
+<<<<<<< HEAD
 
     @ParameterizedTest
     @MethodSource("postReportDataProvider")
@@ -81,4 +83,6 @@ public class AppTest
                 });
     }
 
+=======
+>>>>>>> main
 }

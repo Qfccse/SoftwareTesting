@@ -36,6 +36,14 @@ public class CourseService {
 //        return courseMapper.getAllCourses();
 //    }
 
+    private Message returnMessage(int code, String msg){
+        Message message = new Message();
+        message.set("code", code);
+        message.set("msg", msg);
+        // 0成功 1课程id错误 2教师id错误
+        return message;
+    }
+
     public Message getAllCourses() {
         Message message = new Message();
         message.set("coursesList", courseMapper.getAllCourses());
@@ -43,14 +51,27 @@ public class CourseService {
     }
 
     public Message addCourse(Course course, Teaches teaches) {
-        courseMapper.addCourse(course);
-        teaches.setC_id(course.getC_id());
-        teaches.setRole("1");
-        teachesMapper.addTeaches(teaches);
+        // course
+        int courseID = course.getC_id();
+        if (courseID<420203100 | courseID>420205000){
+            return returnMessage(1, "c_id error");
+        }
+        // courseMapper.addCourse(course); //测试时不使用
 
+        //teach
+        teaches.setC_id(courseID);
+        teaches.setRole("1");
+        String teachID = teaches.getT_id();
+        if (teachID.length()!=5){
+            return returnMessage(2, "t_id error");
+        }
+
+        // teachesMapper.addTeaches(teaches); //测试时不使用
         Message message = new Message();
         message.set("course", course);
         message.set("teaches", teaches);
+        message.set("code", 0);
+        message.set("msg", "成功");
         return message;
     }
 

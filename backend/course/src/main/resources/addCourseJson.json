@@ -1,0 +1,28 @@
+[
+  {
+    "t_id": "04354",
+    "c_id": "420203100"
+  },
+  {
+    "u_id": "06403",
+    "User": {
+      "u_id": "06403",
+      "name": "张老师",
+      "password": "06403",
+      "status": 1,
+      "role": 2,
+      "email": "06403@tongji.edu.cn"
+    }
+  },
+  {
+    "u_id": "1952168",
+    "User": {
+      "u_id": "1952168",
+      "name": "张宇",
+      "password": "1952168",
+      "status": 1,
+      "role": 2,
+      "email": "1952168@tongji.edu.cn"
+    }
+  }
+]

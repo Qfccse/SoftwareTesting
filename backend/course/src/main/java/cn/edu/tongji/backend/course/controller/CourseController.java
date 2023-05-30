@@ -1,9 +1,6 @@
 package cn.edu.tongji.backend.course.controller;
 
-import cn.edu.tongji.backend.course.pojo.Course;
-import cn.edu.tongji.backend.course.pojo.Laboratory;
-import cn.edu.tongji.backend.course.pojo.Teaches;
-import cn.edu.tongji.backend.course.pojo.Todo;
+import cn.edu.tongji.backend.course.pojo.*;
 import cn.edu.tongji.backend.course.pojo.tools.Message;
 import cn.edu.tongji.backend.course.pojo.tools.STATUS;
 import cn.edu.tongji.backend.course.service.CourseService;
@@ -23,7 +20,7 @@ import java.util.Map;
 public class CourseController {
 
     @Autowired
-    private CourseService courseService;
+    private static CourseService courseService;
 
     @GetMapping("/getAllCourses")
     public ResponseEntity<HashMap<String, Object>> getAllCourses() {
@@ -39,7 +36,7 @@ public class CourseController {
      *               query方式  @RequestParam("id") String id, @RequestParam("role") String role
      */
     @GetMapping("/getAllCoursesById/{role}/{id}")
-    public ResponseEntity<HashMap<String, Object>> getCourses(@PathVariable String id, @PathVariable String role) {
+    public static ResponseEntity<HashMap<String, Object>> getCourses(@PathVariable String id, @PathVariable String role) {
         if (role.equals("teacher")) {
             return new ResponseEntity<>(courseService.getCoursesAsTeacher(id).getMap(), HttpStatus.OK);
         } else {
@@ -59,6 +56,7 @@ public class CourseController {
         Teaches teaches = new Teaches();
         teaches.setT_id(params.get("t_id"));
         Message message = courseService.addCourse(course, teaches);
+
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
     }
 

@@ -3,10 +3,13 @@ package cn.edu.tongji.backend.laboratory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 //
+import cn.edu.tongji.backend.laboratory.pojo.Feedback;
 import cn.edu.tongji.backend.laboratory.pojo.Laboratory;
+import cn.edu.tongji.backend.laboratory.pojo.Result;
 import cn.edu.tongji.backend.laboratory.service.LaboratoryService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import org.junit.Test;
 //
 
@@ -41,8 +44,8 @@ public class AppTest
      */
     @ParameterizedTest
     @MethodSource("jsonDataProvider")//数据文件的路径，可以根据自己的情况而定
-    void testSelectCourseLabs(int c_id, List<Laboratory> laboratories){
-        Assertions.assertEquals(laboratories, laboratoryService.getCourseLabs(c_id));
+    void testSelectCourseLabs(int c_id, Result result){
+        Assertions.assertEquals(result, laboratoryService.getCourseLabs(c_id));
     }
 
     static String JSON_FILE_PATH = "src/main/resources/CourseLabs.json";
@@ -53,8 +56,65 @@ public class AppTest
                 .map(obj -> {
                     JSONObject jsonObj = (JSONObject) obj;
                     int c_id = jsonObj.getIntValue("c_id");
-                    List<Laboratory> laboratories = jsonObj.getJSONArray("laboratories").toJavaList(Laboratory.class);
+                    Result<List<Laboratory>> laboratories = jsonObj.getObject("result", new TypeReference<Result<List<Laboratory>>>(){});
                     return Arguments.of(c_id, laboratories);
+                });
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonDataProvider1")//数据文件的路径，可以根据自己的情况而定
+    void testAddLab(Laboratory laboratory, Result result){
+        Assertions.assertEquals(result, laboratoryService.addLab(laboratory));
+    }
+
+    static String JSON_FILE_PATH1 = "src/main/resources/AddLab.json";
+    static Stream<Arguments> jsonDataProvider1() throws IOException {
+        String jsonData = new String(Files.readAllBytes(Paths.get(JSON_FILE_PATH1)));
+        JSONArray jsonArray = JSONArray.parseArray(jsonData);
+        return jsonArray.stream()
+                .map(obj -> {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    Laboratory laboratory = jsonObj.getObject("laboratory", Laboratory.class);
+                    Result result = jsonObj.getObject("result", Result.class);
+                    return Arguments.of(laboratory, result);
+                });
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonDataProvider2")//数据文件的路径，可以根据自己的情况而定
+    void testUpdateLab(Laboratory laboratory, Result result){
+        Assertions.assertEquals(result, laboratoryService.updateLab(laboratory));
+    }
+
+    static String JSON_FILE_PATH2 = "src/main/resources/UpdateLab.json";
+    static Stream<Arguments> jsonDataProvider2() throws IOException {
+        String jsonData = new String(Files.readAllBytes(Paths.get(JSON_FILE_PATH2)));
+        JSONArray jsonArray = JSONArray.parseArray(jsonData);
+        return jsonArray.stream()
+                .map(obj -> {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    Laboratory laboratory = jsonObj.getObject("laboratory", Laboratory.class);
+                    Result result = jsonObj.getObject("result", Result.class);
+                    return Arguments.of(laboratory, result);
+                });
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonDataProvider3")//数据文件的路径，可以根据自己的情况而定
+    void testUpdateLab(Feedback feedback, Result result){
+        Assertions.assertEquals(result, laboratoryService.createFeedback(feedback));
+    }
+
+    static String JSON_FILE_PATH3 = "src/main/resources/CreateFeedback.json";
+    static Stream<Arguments> jsonDataProvider3() throws IOException {
+        String jsonData = new String(Files.readAllBytes(Paths.get(JSON_FILE_PATH3)));
+        JSONArray jsonArray = JSONArray.parseArray(jsonData);
+        return jsonArray.stream()
+                .map(obj -> {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    Feedback feedback = jsonObj.getObject("feedback", Feedback.class);
+                    Result result = jsonObj.getObject("result", Result.class);
+                    return Arguments.of(feedback, result);
                 });
     }
 }

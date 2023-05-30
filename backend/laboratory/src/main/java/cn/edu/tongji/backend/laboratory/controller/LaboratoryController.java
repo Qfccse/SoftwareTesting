@@ -2,6 +2,7 @@ package cn.edu.tongji.backend.laboratory.controller;
 
 import cn.edu.tongji.backend.laboratory.pojo.Feedback;
 import cn.edu.tongji.backend.laboratory.pojo.Laboratory;
+import cn.edu.tongji.backend.laboratory.pojo.Result;
 import cn.edu.tongji.backend.laboratory.service.LaboratoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class LaboratoryController {
     private LaboratoryService laboratoryService;
 
     @GetMapping("/getCourseLabs")
-    public List<Laboratory> getCourseLabs(@RequestParam("c_id") int c_id){
+    public Result<List<Laboratory>> getCourseLabs(@RequestParam("c_id") int c_id){
         return laboratoryService.getCourseLabs(c_id);
     }
 

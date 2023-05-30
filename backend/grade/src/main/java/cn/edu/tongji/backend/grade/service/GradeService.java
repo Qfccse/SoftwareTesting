@@ -59,6 +59,20 @@ public class GradeService {
 
     public Message weightLabs(List<Laboratory> labs) {
         Message message = new Message();
+        int sum = 0;
+        for (Laboratory lab : labs) {
+            sum += lab.getProportion();
+            if (lab.getProportion() < 0 || lab.getProportion() > 100) {
+                message.set("code", 400);
+                message.set("msg", "实验比重须在0-100之间");
+                return message;
+            }
+        }
+        if (sum != 100) {
+            message.set("code", 400);
+            message.set("msg", "课程实验所有比重之和须为100");
+            return message;
+        }
         //先为实验分派权重
         for ( Laboratory lab : labs) {
             labMapper.setProportion(lab);

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface ReportMapper {
@@ -31,6 +32,8 @@ public interface ReportMapper {
     @Select("select * from report where l_id=#{l_id}")
     List<Report> selectLabReport(int l_id);
 
+    @Select("select end_time from laboratory where l_id = #{l_id}")
+    Timestamp selectLabEndTime(int l_id);
     @Select("select student.name from student where s_id=#{s_id}")
     String getStuNameByID(String s_id);
 }

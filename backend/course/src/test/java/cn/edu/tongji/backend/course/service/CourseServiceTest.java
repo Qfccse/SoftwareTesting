@@ -40,4 +40,16 @@ class CourseServiceTest {
         assertEquals(courseService.addCourse(course, teaches).getMap().get("code"), code);
 //        assertEquals(userService.login(u_id,password).getErrorCode(),code);
     }
+
+    @ParameterizedTest
+    @CsvFileSource(resources="/TeacherTest.csv", numLinesToSkip = 1)//数据文件的路径，可以根据自己的情况而定
+    void testGetCoursesAsTeacher(String t_id, int code) {
+        assertEquals(courseService.getCoursesAsTeacher(t_id).getMap().get("code"), code);
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources="/StudentTest.csv", numLinesToSkip = 1)//数据文件的路径，可以根据自己的情况而定
+    void testGetCoursesAsStudent(String s_id, int code) {
+        assertEquals(courseService.getCoursesAsStudent(s_id).getMap().get("code"), code);
+    }
 }

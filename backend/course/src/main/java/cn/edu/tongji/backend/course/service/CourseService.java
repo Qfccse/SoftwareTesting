@@ -51,32 +51,37 @@ public class CourseService {
     }
 
     public Message addCourse(Course course, Teaches teaches) {
+        int code = 0;
         // course
         int courseID = course.getC_id();
         if (courseID<420203100 | courseID>420205000){
-            return returnMessage(1, "c_id error");
+            code += 1;
         }
-        // courseMapper.addCourse(course); //测试时不使用
+        courseMapper.addCourse(course); //测试时不使用
 
         //teach
         teaches.setC_id(courseID);
         teaches.setRole("1");
         String teachID = teaches.getT_id();
         if (teachID.length()!=5){
-            return returnMessage(2, "t_id error");
+            code += 2;
         }
 
-        // teachesMapper.addTeaches(teaches); //测试时不使用
+        teachesMapper.addTeaches(teaches); //测试时不使用
         Message message = new Message();
         message.set("course", course);
         message.set("teaches", teaches);
-        message.set("code", 0);
+        message.set("code", code);
         message.set("msg", "成功");
         return message;
     }
 
     //查询课程
     public Message getCoursesAsTeacher(String id) {
+        int code = 0;
+        if (id.length()!=5){
+            code += 1;
+        }
         Message message = new Message();
         List<CourseAndRole> coursesAsHT = new ArrayList<>();
         List<CourseAndRole> coursesAsTeacher = new ArrayList<>();
@@ -92,10 +97,16 @@ public class CourseService {
 
         message.set("CoursesAsHeadTeacher", coursesAsHT);
         message.set("CoursesAsTeacher", coursesAsTeacher);
+        message.set("code", code);
 
         return message;
     }
     public Message getCoursesAsStudent(String id) {
+        int code = 0;
+        if (id.length()!=7){
+            code += 1;
+        }
+
         Message message = new Message();
         List<CourseAndRole> coursesAsStudent = new ArrayList<>();
         List<CourseAndRole> coursesAsTA = new ArrayList<>();
@@ -111,7 +122,7 @@ public class CourseService {
 
         message.set("CoursesAsStudent", coursesAsStudent);
         message.set("CoursesAsTA", coursesAsTA);
-
+        message.set("code", code);
         return message;
     }
 

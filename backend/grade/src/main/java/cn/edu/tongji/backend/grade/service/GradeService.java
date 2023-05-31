@@ -53,7 +53,13 @@ public class GradeService {
 
     public Message giveFeedback(Operates operates) {
         Message message = new Message();
+        if (operates.getFeedback().equals("")) {
+            message.set("code", 400);
+            message.set("msg", "反馈不能为空");
+            return message;
+        }
         operateMapper.updateFeedback(operates);
+        message.set("code", 200);
         return message;
     }
 
@@ -134,6 +140,16 @@ public class GradeService {
 
     public Message addMark(NewMark newMark) {
         Message message = new Message();
+        if (newMark.getScore() < 0 || newMark.getScore() > 100) {
+            message.set("code", 400);
+            message.set("msg", "学生成绩不合法");
+            return message;
+        }
+        if (newMark.getComment().equals("")) {
+            message.set("code", 400);
+            message.set("msg", "评论不能为空");
+            return message;
+        }
         int r_id = markMapper.getRid(newMark);
 
         Mark mark = new Mark();
@@ -141,10 +157,18 @@ public class GradeService {
         mark.setComment(newMark.getComment());
         mark.setScore(newMark.getScore());
         mark.setT_id(newMark.getT_id());
-        markMapper.addMarks(mark);
+        try {
+            markMapper.addMarks(mark);
+        }
+        catch (Exception e) {
+            message.set("code", 400);
+            message.set("msg", "该报告已打分");
+            return message;
+        }
 
         markMapper.changeReportStatus(r_id);
         message.set("added", 1);
+        message.set("code", 200);
         return message;
     }
 

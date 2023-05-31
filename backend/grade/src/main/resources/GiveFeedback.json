@@ -1,0 +1,26 @@
+[{
+  "operates": {
+    "l_id": 1,
+    "s_id": "2053677",
+    "attend_score": 1,
+    "feedback": "实验指导书很清晰，没遇到什么问题"
+  },
+  "message": {
+    "map": {
+      "code": 200
+    }
+  }
+},{
+  "operates": {
+    "l_id": 1,
+    "s_id": "2053677",
+    "attend_score": 1,
+    "feedback": ""
+  },
+  "message": {
+    "map": {
+      "code": 400,
+      "msg": "反馈不能为空"
+    }
+  }
+}]

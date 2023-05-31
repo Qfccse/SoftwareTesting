@@ -3,6 +3,7 @@ package cn.edu.tongji.backend.laboratory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 //
+import cn.edu.tongji.backend.laboratory.LaboratoryApplication;
 import cn.edu.tongji.backend.laboratory.pojo.Feedback;
 import cn.edu.tongji.backend.laboratory.pojo.Laboratory;
 import cn.edu.tongji.backend.laboratory.pojo.Result;
@@ -10,7 +11,7 @@ import cn.edu.tongji.backend.laboratory.service.LaboratoryService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import org.junit.Test;
+import org.testng.annotations.Test;
 //
 
 import org.junit.jupiter.api.Assertions;
@@ -101,7 +102,7 @@ public class AppTest
 
     @ParameterizedTest
     @MethodSource("jsonDataProvider3")//数据文件的路径，可以根据自己的情况而定
-    void testUpdateLab(Feedback feedback, Result result){
+    void testCreateFeedback(Feedback feedback, Result result){
         Assertions.assertEquals(result, laboratoryService.createFeedback(feedback));
     }
 

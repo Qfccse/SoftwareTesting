@@ -43,13 +43,15 @@ public class LaboratoryService {
             result.setMsg("实验截止时间需晚于起始时间");
             return result;
         }
-        if (laboratory.getDesc() == null) {
+        if (laboratory.getDesc().equals("")) {
             result.setCode(400);
             result.setMsg("实验描述不能为空");
+            return result;
         }
         if (laboratory.getName().length() < 4 || laboratory.getName().length() > 30) {
             result.setCode(400);
             result.setMsg("实验名不规范（长度应在4-30之间）");
+            return result;
         }
 
         laboratoryMapper.insertIntoLab(laboratory);
@@ -70,13 +72,15 @@ public class LaboratoryService {
             result.setMsg("实验截止时间需晚于起始时间");
             return result;
         }
-        if (laboratory.getDesc() == null) {
+        if (laboratory.getDesc().equals("")) {
             result.setCode(400);
             result.setMsg("实验描述不能为空");
+            return result;
         }
         if (laboratory.getName().length() < 4 || laboratory.getName().length() > 30) {
             result.setCode(400);
             result.setMsg("实验名不规范（长度应在4-30之间）");
+            return result;
         }
 
         laboratoryMapper.updateLab(laboratory);

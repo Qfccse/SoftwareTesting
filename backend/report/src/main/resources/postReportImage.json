@@ -1,0 +1,32 @@
+[
+  {
+    "msg": "文件名错误",
+    "rf_id":1,
+    "path": "1670421448276.png",
+    "file_name": "a"
+  },
+  {
+    "msg": "文件后缀错误",
+    "rf_id":1,
+    "path": "1670421448276.png",
+    "file_name": "1.pdf"
+  },
+  {
+    "msg": "该条目不支持图片",
+    "rf_id":3,
+    "path": "1670421448276.png",
+    "file_name": "1.png"
+  },
+  {
+    "msg": "保存路径错误",
+    "rf_id":4,
+    "path": "123123.png",
+    "file_name": "1.png"
+  },
+  {
+    "msg": "添加成功",
+    "rf_id":4,
+    "path": "1670421438297.png",
+    "file_name": "2.jpg"
+  }
+]

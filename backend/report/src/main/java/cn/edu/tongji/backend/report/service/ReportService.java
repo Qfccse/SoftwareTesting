@@ -4,7 +4,6 @@ import cn.edu.tongji.backend.report.mapper.ReportFormMapper;
 import cn.edu.tongji.backend.report.mapper.ReportMapper;
 import cn.edu.tongji.backend.report.mapper.ReportTemplateMapper;
 import cn.edu.tongji.backend.report.pojo.*;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static cn.edu.tongji.backend.report.utils.ReportStatusCode.*;
 
 @Service
 public class ReportService {
@@ -58,14 +59,14 @@ public class ReportService {
     public Result<Integer> postReport(Report report){
         Result<Integer> result = new Result<>();
         if(report.getName().length()<=4){
-            result.setCode(1);
+            result.setCode( ERROR_TITLE_LEN);
             result.setMsg("实验名称过短");
             result.setDetail(0);
             return result;
         }
 
         if(report.getStatus()!=0&&report.getStatus()!=1&&report.getStatus()!=2){
-            result.setCode(2);
+            result.setCode(ERROR_STATUS);
             result.setMsg("报告状态错误");
             result.setDetail(0);
             return result;
@@ -76,7 +77,7 @@ public class ReportService {
         System.out.println(ed);
         System.out.println(cur);
         if(cur.after(ed)){
-            result.setCode(3);
+            result.setCode(ERROR_END_TIME);
             result.setMsg("实验已截止");
             result.setDetail(0);
             return result;
@@ -89,12 +90,14 @@ public class ReportService {
             insertReport(report);
             //System.out.println("创建报告" + report.getR_id() + " + " + report.getL_id() + " + " + report.getS_id());
             result.setMsg("新建报告");
+            result.setCode(SUCCESS_CREATE_REPORT);
             result.setDetail(report.getR_id());
         }
         else {
             //System.out.println("查看报告" + report.getR_id() + " + " + report.getL_id() + " + " + report.getS_id());
             result.setDetail(selectStuReport(report.getL_id(), report.getS_id()).getR_id());
             result.setMsg("查看报告");
+            result.setCode(SUCCESS_GET_REPORT);
         }
         return result;
     }
@@ -112,6 +115,7 @@ public class ReportService {
         int l_id_tmp = l_id;
         if(s_id.length()!=7){
             result.setMsg("s_id错误");
+            result.setCode(ERROR_SID);
             return result;
         }
         if(count==0)
@@ -127,7 +131,11 @@ public class ReportService {
         List<ReportRow> reportRows = new ArrayList<>();
         if(report.getStatus()==0){
             // System.out.println("未提交实验报告");
-            result.appendMsg("未提交实验报告");
+            result.appendMsg("未提交，获取成功");
+            result.setCode(SUCCESS_NOT_SUBMIT_REPORT);
+            if(count==0){
+                result.setCode(SUCCESS_NOT_SUBMIT_REPORT_DEFAULT);
+            }
             for (ReportTemplate reportTemplate : reportTemplates) {
                 reportRows.add(new ReportRow(reportTemplate,"",0));
             }
@@ -135,7 +143,11 @@ public class ReportService {
             return result;
         }
         else {
-            result.appendMsg("已提交");
+            result.appendMsg("已提交，获取成功");
+            result.setCode(SUCCESS_HAVE_SUBMIT_REPORT);
+            if(count==0){
+                result.setCode(SUCCESS_HAVE_SUBMIT_REPORT_DEFAULT);
+            }
             Result<List<ReportRow>> res = getReport(l_id, s_id);
             res.setMsg(result.getMsg());
             return res;
@@ -181,12 +193,12 @@ public class ReportService {
         int r_id = 0;
         if(s_id.length()!=7){
             result.setMsg("学号错误");
-            result.setCode(1);
+            result.setCode(ERROR_SID);
             return result;
         }
         if(status!=0&&status!=1&&status!=2){
             result.setMsg("状态错误");
-            result.setCode(2);
+            result.setCode(ERROR_STATUS);
             return result;
         }
         Timestamp ed= reportMapper.selectLabEndTime(l_id);
@@ -194,7 +206,7 @@ public class ReportService {
         System.out.println(ed);
         System.out.println(cur);
         if(cur.after(ed)){
-            result.setCode(3);
+            result.setCode(ERROR_END_TIME);
             result.setMsg("实验已截止");
             return result;
         }
@@ -203,7 +215,7 @@ public class ReportService {
         for (ReportForm form : reportForms) {
             if(form.getContent().isEmpty()&&requires.get(i)){
                 result.setMsg("提交了不完整的报告");
-                result.setCode(4);
+                result.setCode(ERROR_UNFILLED_FORM);
                 return result;
             }
             i++;
@@ -213,11 +225,13 @@ public class ReportService {
             {
                 //System.out.println("insert form");
                 result.appendMsg("1");
+                result.setCode(SUCCESS_INSERT_FORM);
                 reportFormMapper.insertIntoReportForm(form);
             }
             else {
                 //System.out.println("update form");
                 result.appendMsg("2");
+                result.setCode(SUCCESS_UPDATE_FORM);
                 form.setRf_id(reportFormMapper.selectRfId(form.getR_id(), form.getRt_id()));
                 reportFormMapper.updateReportForm(form);
             }

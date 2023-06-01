@@ -17,7 +17,7 @@ public class Result<T> {
             this.msg = msg;
         }
         else {
-            this.msg += "+" + msg;
+            this.msg += "，" + msg;
         }
     }
 }

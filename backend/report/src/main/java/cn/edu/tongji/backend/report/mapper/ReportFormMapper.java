@@ -35,4 +35,7 @@ public interface ReportFormMapper {
 
     @Select("select count(rf_id) from report_form where r_id=#{r_id} and rt_id=#{rt_id}")
     int selectCountReportFormCheck(int r_id, int rt_id);
+
+    @Select("select type from report_template left join report_form rf on report_template.rt_id = rf.rt_id where rf_id = #{rf_id}")
+    String selectReportFormType(int rf_id);
 }

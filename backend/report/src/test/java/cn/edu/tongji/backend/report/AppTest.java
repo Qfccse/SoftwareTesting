@@ -3,6 +3,7 @@ package cn.edu.tongji.backend.report;
 import cn.edu.tongji.backend.report.pojo.Report;
 import cn.edu.tongji.backend.report.pojo.ReportForm;
 import cn.edu.tongji.backend.report.pojo.ReportTemplate;
+import cn.edu.tongji.backend.report.service.ReportFormService;
 import cn.edu.tongji.backend.report.service.ReportService;
 import cn.edu.tongji.backend.report.service.ReportTemplateService;
 import com.alibaba.fastjson.JSONArray;
@@ -41,6 +42,9 @@ public class AppTest
     @Autowired
     private ReportTemplateService reportTemplateService;
 
+    @Autowired
+    private ReportFormService reportFormService;
+
     /**
      * 等价类，前4个是有效等价类，后2个是无效等价类
      */
@@ -53,8 +57,7 @@ public class AppTest
     @ParameterizedTest
     @MethodSource("postReportDataProvider")
     void postReportTest(String msg, Report report) {
-        System.out.println(report);
-        // 这个测试应该是前两个通过，最后一个不通过
+        // System.out.println(report);
         assertEquals(msg, reportService.postReport(report).getMsg());
     }
     static String POST_JSON_FILE_PATH = "src/main/resources/postReport.json";
@@ -126,6 +129,26 @@ public class AppTest
                     String msg = jsonObj.getString("msg");
                     ReportTemplate reportTemplate = jsonObj.getObject("ReportTemplate",ReportTemplate.class);
                     return Arguments.of(msg,reportTemplate);
+                });
+    }
+
+    @ParameterizedTest
+    @MethodSource("postReportImageDataProvider")
+    void postReportImageTest(String msg,int rf_id,String path, String file_name) {
+        assertEquals(msg, reportFormService.insertImage(rf_id, path, file_name).getMsg());
+    }
+    static String POST_IMAGE_JSON_FILE_PATH = "src/main/resources/postReportImage.json";
+    static Stream<Arguments> postReportImageDataProvider() throws IOException {
+        String jsonData = new String(Files.readAllBytes(Paths.get(POST_IMAGE_JSON_FILE_PATH)));
+        JSONArray jsonArray = JSONArray.parseArray(jsonData);
+        return jsonArray.stream()
+                .map(obj -> {
+                    JSONObject jsonObj = (JSONObject) obj;
+                    String msg = jsonObj.getString("msg");
+                    int rf_id = jsonObj.getIntValue("rf_id");
+                    String path = jsonObj.getString("path");
+                    String file_name = jsonObj.getString("file_name");
+                    return Arguments.of(msg,rf_id,path,file_name);
                 });
     }
 }

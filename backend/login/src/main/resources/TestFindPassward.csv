@@ -1,0 +1,13 @@
+u_id,email,code,description,vocode,onehot
+2,2,2,,,1
+id格式错误,email格式有误,code格式有误,,,2
+id不存在,email不存在,code与vocode不相同,,,3
+04354,04354@tongji.edu.cn,123456,正确,123456,111
+04354,"",12,email格式有误，code格式有误,123456,122
+04354,11111@tongji.edu.cn,111111,email不存在，code与vocode不相同,123456,133
+043544,04354@tongji.edu.cn,abc,id格式错误，code格式有误,123456,212
+043544,"",111111,id格式错误，email格式有误，code与vocode不相同,123456,223
+043544,11111@tongji.edu.cn,123456,id格式错误，email不存在,123456,231
+11111,04354@tongji.edu.cn,111111,id不存在，code与vocode不相同,123456,313
+11111,"",123456,id不存在，email格式有误,123456,321
+11111,11111@tongji.edu.cn,abc,id不存在，email不存在，code格式有误,123456,332

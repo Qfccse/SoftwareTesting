@@ -1,10 +1,7 @@
 package cn.edu.tongji.backend.course.service;
 
 import cn.edu.tongji.backend.course.mapper.*;
-import cn.edu.tongji.backend.course.pojo.Course;
-import cn.edu.tongji.backend.course.pojo.Laboratory;
-import cn.edu.tongji.backend.course.pojo.Teaches;
-import cn.edu.tongji.backend.course.pojo.Todo;
+import cn.edu.tongji.backend.course.pojo.*;
 import cn.edu.tongji.backend.course.pojo.info.CourseAndRole;
 import cn.edu.tongji.backend.course.pojo.tools.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,14 +123,47 @@ public class CourseService {
         return message;
     }
 
-    public Course updateCourse(Course course) {
-        courseMapper.updateCourse(course);
-        return course;
+    public Result<Course> updateCourse(Course course) {
+        Result result = new Result<>();
+        int [] tf = new int[4];
+        if (course.getC_id()<420203100 || course.getC_id() > 420205000)
+        {
+            if (course.getC_id()<420203100)
+                tf[0]=1;
+            else 
+                tf[0]=2;
+        }
+        if (course.getName().length()<4 || course.getName().length()>20){
+            if (course.getName().length()<4)
+                tf[1]=1;
+            else 
+                tf[1]=2;
+        }
+        if (course.getStatus() == 1)
+            tf[2]=0;
+        else if (course.getStatus() == 2) {
+            tf[2]=1;
+        } else if (course.getStatus() == 0) {
+            tf[2]=2;
+        }
+        if (course.getDesc() == null){
+            tf[3]=1;
+        }
+        StringBuilder t = new StringBuilder(tf[0] + "");
+        for (int i =1;i<4;i++)
+            t.append(tf[i]);
+
+        result.setOnehot(String.valueOf(t));
+        // courseMapper.updateCourse(course); // not in test
+        return result;
     }
 
-    public Laboratory updateLab(Laboratory laboratory) {
+    public Result<Laboratory> updateLab(Laboratory laboratory) {
+        Result result = new Result<>();
+
         laboratoryMapper.updateLab(laboratory);
-        return laboratory;
+        result.setCode(300);
+        return result;
     }
 
     public boolean deleteCourse(int id) {

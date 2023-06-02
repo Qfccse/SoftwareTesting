@@ -4,11 +4,9 @@ import cn.edu.tongji.backend.login.pojo.User;
 import cn.edu.tongji.backend.login.service.UserService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+//import java.util.stream.Stream;
 /**
  * Unit test for simple App.
  */
@@ -65,6 +64,18 @@ public class AppTest
                     User user = jsonObj.getObject("User",User.class);
                     return Arguments.of(id,user);
                 });
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources="/TestFindPassward.csv", numLinesToSkip = 4)//数据文件的路径，可以根据自己的情况而定
+    void testFindPassward(String u_id, String email, String code, String desc, String vocode, String onehot){
+        User user = new User();
+        user.setU_id(u_id);
+        user.setEmail(email);
+        user.setCode(vocode);
+        assertEquals(userService.findPassword(user, email, code).getOnehot(), onehot);
+
+//        assertEquals(userService.login(u_id,password).getErrorCode(),code);
     }
 
 }

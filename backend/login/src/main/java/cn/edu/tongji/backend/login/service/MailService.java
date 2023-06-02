@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MailService {
@@ -20,10 +22,12 @@ public class MailService {
 
     public String mailAPI( String email, HttpSession session){
         try {
+
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setSubject("验证码邮件");//主题
             //生成随机数
             String code = randomCode();
+
             //将随机数放置到session中
             session.setAttribute("email",email);
             session.setAttribute("code",code);

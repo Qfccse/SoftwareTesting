@@ -4,7 +4,13 @@ import cn.edu.tongji.backend.login.pojo.Result;
 import cn.edu.tongji.backend.login.pojo.User;
 import cn.edu.tongji.backend.login.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpSession;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -18,6 +24,47 @@ public class UserService {
      */
     public String checkPassword(String u_id, String password) {
         return userMapper.checkUserPassword(u_id, password);
+    }
+
+    public Result<User> findPassword(User user, String email, String code){
+
+        Result<User> result = new Result<>();
+        int [] tf = new int[3];
+        for (int i = 0;i<3;i++)
+            tf[i]=1;
+        boolean etf=true;
+
+        if (user.getU_id().length()!=5 && user.getU_id().length()!=7){
+            tf[0]=2;
+        }else if (countUser(user.getU_id())==0){
+            tf[0]=3;
+        }
+
+        if (email==null || email.equals("")) {
+            tf[1] = 2;
+        } else if  (checkEmail(user.getEmail())==0) {
+            tf[1]=3;
+        }
+
+        //        etf = Pattern.matches("^(\\w+([-.][A-Za-z0-9]+)*){3,18}@\\w+([-.][A-Za-z0-9]+)*\\.\\w+([-.][A-Za-z0-9]+)*$", email);
+//        if (!etf)
+//            tf[1]=2;
+
+        if (code.length()!=6)
+            tf[2]=2;
+        Pattern pattern = Pattern.compile("^-?\\d+(\\.\\d+)?$");//这个也行
+        Matcher isNum = pattern.matcher(code);
+        if (!isNum.matches()) {
+            tf[2]=2;
+        }
+        String voCode = user.getCode();
+        if (!code.equals(voCode) && tf[2]!=2)
+            tf[2]=3;
+        StringBuilder t = new StringBuilder(tf[0] + "");
+        for (int i =1;i<3;i++)
+            t.append(tf[i]);
+        result.setOnehot(String.valueOf(t));
+        return result;
     }
 
     public int countUser(String u_id){

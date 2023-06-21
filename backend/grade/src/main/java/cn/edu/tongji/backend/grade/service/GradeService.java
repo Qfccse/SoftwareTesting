@@ -53,32 +53,12 @@ public class GradeService {
 
     public Message giveFeedback(Operates operates) {
         Message message = new Message();
-        if (operates.getFeedback().equals("")) {
-            message.set("code", 400);
-            message.set("msg", "反馈不能为空");
-            return message;
-        }
         operateMapper.updateFeedback(operates);
-        message.set("code", 200);
         return message;
     }
 
     public Message weightLabs(List<Laboratory> labs) {
         Message message = new Message();
-        int sum = 0;
-        for (Laboratory lab : labs) {
-            sum += lab.getProportion();
-            if (lab.getProportion() < 0 || lab.getProportion() > 100) {
-                message.set("code", 400);
-                message.set("msg", "实验比重须在0-100之间");
-                return message;
-            }
-        }
-        if (sum != 100) {
-            message.set("code", 400);
-            message.set("msg", "课程实验所有比重之和须为100");
-            return message;
-        }
         //先为实验分派权重
         for ( Laboratory lab : labs) {
             labMapper.setProportion(lab);
@@ -140,16 +120,6 @@ public class GradeService {
 
     public Message addMark(NewMark newMark) {
         Message message = new Message();
-        if (newMark.getScore() < 0 || newMark.getScore() > 100) {
-            message.set("code", 400);
-            message.set("msg", "学生成绩不合法");
-            return message;
-        }
-        if (newMark.getComment().equals("")) {
-            message.set("code", 400);
-            message.set("msg", "评论不能为空");
-            return message;
-        }
         int r_id = markMapper.getRid(newMark);
 
         Mark mark = new Mark();
@@ -157,18 +127,10 @@ public class GradeService {
         mark.setComment(newMark.getComment());
         mark.setScore(newMark.getScore());
         mark.setT_id(newMark.getT_id());
-        try {
-            markMapper.addMarks(mark);
-        }
-        catch (Exception e) {
-            message.set("code", 400);
-            message.set("msg", "该报告已打分");
-            return message;
-        }
+        markMapper.addMarks(mark);
 
         markMapper.changeReportStatus(r_id);
         message.set("added", 1);
-        message.set("code", 200);
         return message;
     }
 

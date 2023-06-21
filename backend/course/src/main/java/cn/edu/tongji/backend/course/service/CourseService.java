@@ -1,7 +1,10 @@
 package cn.edu.tongji.backend.course.service;
 
 import cn.edu.tongji.backend.course.mapper.*;
-import cn.edu.tongji.backend.course.pojo.*;
+import cn.edu.tongji.backend.course.pojo.Course;
+import cn.edu.tongji.backend.course.pojo.Laboratory;
+import cn.edu.tongji.backend.course.pojo.Teaches;
+import cn.edu.tongji.backend.course.pojo.Todo;
 import cn.edu.tongji.backend.course.pojo.info.CourseAndRole;
 import cn.edu.tongji.backend.course.pojo.tools.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +36,6 @@ public class CourseService {
 //        return courseMapper.getAllCourses();
 //    }
 
-    private Message returnMessage(int code, String msg){
-        Message message = new Message();
-        message.set("code", code);
-        message.set("msg", msg);
-        // 0成功 1课程id错误 2教师id错误
-        return message;
-    }
-
     public Message getAllCourses() {
         Message message = new Message();
         message.set("coursesList", courseMapper.getAllCourses());
@@ -48,37 +43,19 @@ public class CourseService {
     }
 
     public Message addCourse(Course course, Teaches teaches) {
-        int code = 0;
-        // course
-        int courseID = course.getC_id();
-        if (courseID<420203100 | courseID>420205000){
-            code += 1;
-        }
-        courseMapper.addCourse(course); //测试时不使用
-
-        //teach
-        teaches.setC_id(courseID);
+        courseMapper.addCourse(course);
+        teaches.setC_id(course.getC_id());
         teaches.setRole("1");
-        String teachID = teaches.getT_id();
-        if (teachID.length()!=5){
-            code += 2;
-        }
+        teachesMapper.addTeaches(teaches);
 
-        teachesMapper.addTeaches(teaches); //测试时不使用
         Message message = new Message();
         message.set("course", course);
         message.set("teaches", teaches);
-        message.set("code", code);
-        message.set("msg", "成功");
         return message;
     }
 
     //查询课程
     public Message getCoursesAsTeacher(String id) {
-        int code = 0;
-        if (id.length()!=5){
-            code += 1;
-        }
         Message message = new Message();
         List<CourseAndRole> coursesAsHT = new ArrayList<>();
         List<CourseAndRole> coursesAsTeacher = new ArrayList<>();
@@ -94,16 +71,10 @@ public class CourseService {
 
         message.set("CoursesAsHeadTeacher", coursesAsHT);
         message.set("CoursesAsTeacher", coursesAsTeacher);
-        message.set("code", code);
 
         return message;
     }
     public Message getCoursesAsStudent(String id) {
-        int code = 0;
-        if (id.length()!=7){
-            code += 1;
-        }
-
         Message message = new Message();
         List<CourseAndRole> coursesAsStudent = new ArrayList<>();
         List<CourseAndRole> coursesAsTA = new ArrayList<>();
@@ -119,51 +90,18 @@ public class CourseService {
 
         message.set("CoursesAsStudent", coursesAsStudent);
         message.set("CoursesAsTA", coursesAsTA);
-        message.set("code", code);
+
         return message;
     }
 
-    public Result<Course> updateCourse(Course course) {
-        Result result = new Result<>();
-        int [] tf = new int[4];
-        if (course.getC_id()<420203100 || course.getC_id() > 420205000)
-        {
-            if (course.getC_id()<420203100)
-                tf[0]=1;
-            else 
-                tf[0]=2;
-        }
-        if (course.getName().length()<4 || course.getName().length()>20){
-            if (course.getName().length()<4)
-                tf[1]=1;
-            else 
-                tf[1]=2;
-        }
-        if (course.getStatus() == 1)
-            tf[2]=0;
-        else if (course.getStatus() == 2) {
-            tf[2]=1;
-        } else if (course.getStatus() == 0) {
-            tf[2]=2;
-        }
-        if (course.getDesc() == null){
-            tf[3]=1;
-        }
-        StringBuilder t = new StringBuilder(tf[0] + "");
-        for (int i =1;i<4;i++)
-            t.append(tf[i]);
-
-        result.setOnehot(String.valueOf(t));
-        // courseMapper.updateCourse(course); // not in test
-        return result;
+    public Course updateCourse(Course course) {
+        courseMapper.updateCourse(course);
+        return course;
     }
 
-    public Result<Laboratory> updateLab(Laboratory laboratory) {
-        Result result = new Result<>();
-
+    public Laboratory updateLab(Laboratory laboratory) {
         laboratoryMapper.updateLab(laboratory);
-        result.setCode(300);
-        return result;
+        return laboratory;
     }
 
     public boolean deleteCourse(int id) {
@@ -181,7 +119,6 @@ public class CourseService {
     }
 
 
-    // 不用测、重复了
     public Message getLabsByCid(int c_id) {
         Message message = new Message();
         message.set("labs", laboratoryMapper.getLabsByCid(c_id));

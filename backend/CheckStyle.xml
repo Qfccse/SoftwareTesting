@@ -11,7 +11,7 @@
     </module>
     <!-- 每行不超过120个字 -->
     <module name="LineLength">
-        <property name="max" value="200" />
+        <property name="max" value="150"/>
     </module>
 
     <module name="TreeWalker">
@@ -30,32 +30,32 @@
 
         <!-- ********************************javadoc的检查********************-->
         <!-- 检查Javadoc -->
-        <!--<module name="JavadocStyle">-->
-        <!--    &lt;!&ndash; 忽略句号结尾检查 &ndash;&gt;-->
-        <!--    <property name='checkFirstSentence' value='false'/>-->
-        <!--    <property name='checkEmptyJavadoc' value='true'/>-->
-        <!--</module>-->
-        <!--&lt;!&ndash; 检查所有的interface和class的doc &ndash;&gt;-->
-        <!--<module name="JavadocType">-->
-        <!--    &lt;!&ndash; 注释里允许所有注解 &ndash;&gt;-->
-        <!--    <property name='allowUnknownTags' value='true'/>-->
-        <!--</module>-->
-        <!--&lt;!&ndash; 检查所有方法的javadoc 注意方法上的@param XXX后必须跟参数说明检查才能通过 &ndash;&gt;-->
-        <!--<module name='MissingJavadocMethod'>-->
-        <!--    <property name="allowMissingPropertyJavadoc" value="true"/>-->
-        <!--    <property name="allowedAnnotations" value="Override,Deprecated,ApiOperation"/>-->
-        <!--    <property name="ignoreMethodNamesRegex" value="main"/>-->
-        <!--</module>-->
-        <!--<module name="JavadocMethod"/>-->
-        <!--&lt;!&ndash; 变量的javadoc &ndash;&gt;-->
-        <!--<module name="JavadocVariable">-->
-        <!--    &lt;!&ndash; 忽略检查的变量名 &ndash;&gt;-->
-        <!--    <property name='ignoreNamePattern' value='.*Business|.*Service|.*Handler|.*Mapper|.*Template|.*Client|.*Util.*|LOG|LOGGER'/>-->
-        <!--</module>-->
+        <module name="JavadocStyle">
+            <!-- 忽略句号结尾检查 -->
+            <property name='checkFirstSentence' value='false'/>
+            <property name='checkEmptyJavadoc' value='true'/>
+        </module>
+        <!-- 检查所有的interface和class的doc -->
+        <module name="JavadocType">
+            <!-- 注释里允许所有注解 -->
+            <property name='allowUnknownTags' value='true'/>
+        </module>
+        <!-- 检查所有方法的javadoc 注意方法上的@param XXX后必须跟参数说明检查才能通过 -->
+        <module name='MissingJavadocMethod'>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+            <property name="allowedAnnotations" value="Override,Deprecated,ApiOperation"/>
+            <property name="ignoreMethodNamesRegex" value="main"/>
+        </module>
+        <module name="JavadocMethod"/>
+        <!-- 变量的javadoc -->
+        <module name="JavadocVariable">
+            <!-- 忽略检查的变量名 -->
+            <property name='ignoreNamePattern' value='.*Business|.*Service|.*Handler|.*Mapper|.*Template|.*Client|.*Util.*|LOG|LOGGER'/>
+        </module>
 
         <!-- ********************************import方面的检查*********** -->
         <!-- import中避免星号"*" -->
-        <!--<module name="AvoidStarImport"/>-->
+        <module name="AvoidStarImport"/>
         <!-- 检查是否从非法的包中导入了类 -->
         <module name="IllegalImport"/>
         <!-- 检查是否导入了多余的包 -->
@@ -65,29 +65,29 @@
 
         <!-- ********************************命名规则检查****************** -->
         <!-- 包名检查 ^[a-z]+(\.[a-z][a-z0-9]*)*$ -->
-        <!--<module name="PackageName">-->
-        <!--    <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>-->
-        <!--    <message key="name.invalidPattern" value="包名 ''{0}'' 要符合 ''{1}''格式."/>-->
-        <!--</module>-->
-        <!--&lt;!&ndash; 类型(Class或Interface)名  ^[A-Z][a-zA-Z0-9]*$&ndash;&gt;-->
-        <!--<module name="TypeName">-->
-        <!--    <property name="severity" value="warning"/>-->
-        <!--    <message key="name.invalidPattern" value="名称 ''{0}'' 要符合 ''{1}''格式."/>-->
-        <!--</module>-->
-        <!--&lt;!&ndash; 方法名  ^[a-z][a-zA-Z0-9]*$&ndash;&gt;-->
-        <!--<module name="MethodName"/>-->
-        <!--&lt;!&ndash; 方法的参数命名 ^[a-z][a-zA-Z0-9]*$&ndash;&gt;-->
-        <!--<module name="ParameterName "/>-->
-        <!--&lt;!&ndash; 非static型变量  ^[a-z][a-zA-Z0-9]*$&ndash;&gt;-->
-        <!--<module name="MemberName"/>-->
-        <!--&lt;!&ndash; 常量(static , final 字段)  ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&ndash;&gt;-->
-        <!--<module name="ConstantName"/>-->
-        <!--&lt;!&ndash; 局部的final变量，包括catch中的参数  ^[a-z][a-zA-Z0-9]*$ &ndash;&gt;-->
-        <!--<module name="LocalFinalVariableName"/>-->
-        <!--&lt;!&ndash; 局部的非final型的变量，包括catch中的参数  ^[a-z][a-zA-Z0-9]*$ &ndash;&gt;-->
-        <!--<module name="LocalVariableName"/>-->
-        <!--&lt;!&ndash; 仅仅是static型的变量（不包括staticfinal型）  ^[a-z][a-zA-Z0-9]*$ &ndash;&gt;-->
-        <!--<module name="StaticVariableName"/>-->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <message key="name.invalidPattern" value="包名 ''{0}'' 要符合 ''{1}''格式."/>
+        </module>
+        <!-- 类型(Class或Interface)名  ^[A-Z][a-zA-Z0-9]*$-->
+        <module name="TypeName">
+            <property name="severity" value="warning"/>
+            <message key="name.invalidPattern" value="名称 ''{0}'' 要符合 ''{1}''格式."/>
+        </module>
+        <!-- 方法名  ^[a-z][a-zA-Z0-9]*$-->
+        <module name="MethodName"/>
+        <!-- 方法的参数命名 ^[a-z][a-zA-Z0-9]*$-->
+        <module name="ParameterName "/>
+        <!-- 非static型变量  ^[a-z][a-zA-Z0-9]*$-->
+        <module name="MemberName"/>
+        <!-- 常量(static , final 字段)  ^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$-->
+        <module name="ConstantName"/>
+        <!-- 局部的final变量，包括catch中的参数  ^[a-z][a-zA-Z0-9]*$ -->
+        <module name="LocalFinalVariableName"/>
+        <!-- 局部的非final型的变量，包括catch中的参数  ^[a-z][a-zA-Z0-9]*$ -->
+        <module name="LocalVariableName"/>
+        <!-- 仅仅是static型的变量（不包括staticfinal型）  ^[a-z][a-zA-Z0-9]*$ -->
+        <module name="StaticVariableName"/>
 
         <!-- **************方法的参数个数不超过5个。 并且不对构造方法和重写方法进行检查*******-->
         <module name="ParameterNumber">
@@ -132,17 +132,15 @@
         <module name="TabCharacter"/>
         -->
         <!-- 检查在某个特定关键字之后应保留空格 -->
-        <!--<module name="NoWhitespaceAfter"/>-->
-        <!--&lt;!&ndash; 检查在某个特定关键字之前应保留空格 &ndash;&gt;-->
-        <!--<module name="NoWhitespaceBefore"/>-->
-        <!--&lt;!&ndash; 操作符换行策略检查 &ndash;&gt;-->
-        <!--<module name="OperatorWrap"/>-->
-        <!--&lt;!&ndash; 检查分隔符是否在空白之后 &ndash;&gt;-->
-        <!--<module name="WhitespaceAfter"/>-->
-        <!--&lt;!&ndash; 检查分隔符周围是否有空白 &ndash;&gt;-->
-        <!--<module name="WhitespaceAround">-->
-        <!--    <property name="severity" value="warning" />-->
-        <!--</module>-->
+        <module name="NoWhitespaceAfter"/>
+        <!-- 检查在某个特定关键字之前应保留空格 -->
+        <module name="NoWhitespaceBefore"/>
+        <!-- 操作符换行策略检查 -->
+        <module name="OperatorWrap"/>
+        <!-- 检查分隔符是否在空白之后 -->
+        <module name="WhitespaceAfter"/>
+        <!-- 检查分隔符周围是否有空白 -->
+        <module name="WhitespaceAround"/>
 
 
         <!-- **********************关键字********************************** -->
@@ -163,9 +161,9 @@
             <property name="allowInSwitchCase" value="true"/>
         </module>
         <!-- 检查左大括号位置 -->
-        <!--<module name="LeftCurly"/>-->
+        <module name="LeftCurly"/>
         <!-- 检查右大括号位置 -->
-        <!--<module name="RightCurly"/>-->
+        <module name="RightCurly"/>
 
         <!-- ******************************编码方面的检查 **********************-->
         <!-- 检查空的代码段
@@ -292,14 +290,14 @@
         </module>
 
         <!-- 禁止使用System.out.println -->
-        <!--<module name="Regexp">-->
-        <!--    <property name="format" value=".printStackTrace"/>-->
-        <!--    <property name="illegalPattern" value="true"/>-->
-        <!--</module>-->
-        <!--<module name="Regexp">-->
-        <!--    <property name="format" value="System.out.println"/>-->
-        <!--    <property name="illegalPattern" value="true"/>-->
-        <!--</module>-->
+        <module name="Regexp">
+            <property name="format" value=".printStackTrace"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <module name="Regexp">
+            <property name="format" value="System.out.println"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
 
         <!-- ************************其他*********************************** -->
         <!-- 检查并确保所有的常量中的L都是大写的。因为小写的字母l跟数字1太象了 -->

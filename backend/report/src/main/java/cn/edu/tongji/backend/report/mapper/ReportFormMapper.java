@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface ReportFormMapper {
@@ -36,16 +35,4 @@ public interface ReportFormMapper {
 
     @Select("select count(rf_id) from report_form where r_id=#{r_id} and rt_id=#{rt_id}")
     int selectCountReportFormCheck(int r_id, int rt_id);
-
-    @Select("select type from report_template left join report_form rf on report_template.rt_id = rf.rt_id where rf_id = #{rf_id}")
-    String selectReportFormType(int rf_id);
-
-    @Select("select start_time from laboratory left join report r on laboratory.l_id = r.l_id where r_id=#{r_id}")
-    Timestamp selectLabSt(int rt_id);
-
-    @Select("select r_id from report_form where rf_id = #{rf_id}")
-    Integer selectRid(int rf_id);
-
-    @Select("select end_time from laboratory left join report r on laboratory.l_id = r.l_id where r_id=#{r_id}")
-    Timestamp selectLabEd(int rt_id);
 }

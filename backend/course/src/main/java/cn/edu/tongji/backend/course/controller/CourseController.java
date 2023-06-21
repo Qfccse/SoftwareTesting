@@ -1,6 +1,9 @@
 package cn.edu.tongji.backend.course.controller;
 
-import cn.edu.tongji.backend.course.pojo.*;
+import cn.edu.tongji.backend.course.pojo.Course;
+import cn.edu.tongji.backend.course.pojo.Laboratory;
+import cn.edu.tongji.backend.course.pojo.Teaches;
+import cn.edu.tongji.backend.course.pojo.Todo;
 import cn.edu.tongji.backend.course.pojo.tools.Message;
 import cn.edu.tongji.backend.course.pojo.tools.STATUS;
 import cn.edu.tongji.backend.course.service.CourseService;
@@ -20,7 +23,7 @@ import java.util.Map;
 public class CourseController {
 
     @Autowired
-    private static CourseService courseService;
+    private CourseService courseService;
 
     @GetMapping("/getAllCourses")
     public ResponseEntity<HashMap<String, Object>> getAllCourses() {
@@ -36,10 +39,11 @@ public class CourseController {
      *               query方式  @RequestParam("id") String id, @RequestParam("role") String role
      */
     @GetMapping("/getAllCoursesById/{role}/{id}")
-    public static ResponseEntity<HashMap<String, Object>> getCourses(@PathVariable String id, @PathVariable String role) {
+    public ResponseEntity<HashMap<String, Object>> getCourses(@PathVariable String id, @PathVariable String role) {
         if (role.equals("teacher")) {
             return new ResponseEntity<>(courseService.getCoursesAsTeacher(id).getMap(), HttpStatus.OK);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(courseService.getCoursesAsStudent(id).getMap(), HttpStatus.OK);
         }
     }
@@ -56,13 +60,18 @@ public class CourseController {
         Teaches teaches = new Teaches();
         teaches.setT_id(params.get("t_id"));
         Message message = courseService.addCourse(course, teaches);
-
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
     }
 
+    class Param {
+        public Course course;
+        public Teaches teaches;
+    }
+
+
     //更改课程 名字 描述 状态
     @PutMapping
-    public ResponseEntity<HashMap<String, Object>> updateCourse(@RequestBody Course course) {
+    public ResponseEntity<HashMap<String, Object>> updateCourse(@RequestBody Course course){
         Message message = new Message();
         message.set("course", courseService.updateCourse(course));
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -70,7 +79,7 @@ public class CourseController {
 
     //修改课程描述
     @PostMapping("/labModify")
-    public ResponseEntity<HashMap<String, Object>> updateLab(@RequestBody Laboratory laboratory) {
+    public ResponseEntity<HashMap<String, Object>> updateLab(@RequestBody Laboratory laboratory){
         Message message = new Message();
         message.set("course", courseService.updateLab(laboratory));
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -92,11 +101,10 @@ public class CourseController {
     public ResponseEntity<HashMap<String, Object>> getCourseById(@PathVariable int c_id) {
         Message message = new Message();
         Course course = courseService.getCourseById(c_id);
-        if (course == null)
-        {
+        if (course == null) {
             message.set("status", STATUS.BADPARAM);
-        } else
-        {
+        }
+        else{
             message.set("course", course);
         }
         return new ResponseEntity<>(message.getMap(), HttpStatus.OK);
@@ -106,12 +114,10 @@ public class CourseController {
     public ResponseEntity<HashMap<String, Object>> getLabsByCid(@PathVariable int c_id) {
         Message message;
 
-        if (c_id > 420203100)
-        {
+        if ( c_id > 420203100) {
             message = courseService.getLabsByCid(c_id);
         }
-        else
-        {
+        else {
             message = new Message();
             message.set("status", STATUS.BADPARAM);
         }

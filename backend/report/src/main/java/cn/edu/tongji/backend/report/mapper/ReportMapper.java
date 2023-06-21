@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface ReportMapper {
@@ -21,7 +20,7 @@ public interface ReportMapper {
     Report selectReportById(int l_id, String s_id);
 
     @Select("select r_id from report where l_id=#{l_id} and s_id=#{s_id};")
-    Integer selectIdFromReport(int l_id, String s_id);
+    int selectIdFromReport(int l_id, String s_id);
 
     @Select("select count(r_id) from report  where l_id=#{l_id} and s_id=#{s_id}")
     int selectCountFromReport(int l_id, String s_id);
@@ -32,9 +31,6 @@ public interface ReportMapper {
     @Select("select * from report where l_id=#{l_id}")
     List<Report> selectLabReport(int l_id);
 
-    @Select("select end_time from laboratory where l_id = #{l_id}")
-    Timestamp selectLabEndTime(int l_id);
     @Select("select student.name from student where s_id=#{s_id}")
     String getStuNameByID(String s_id);
-
 }

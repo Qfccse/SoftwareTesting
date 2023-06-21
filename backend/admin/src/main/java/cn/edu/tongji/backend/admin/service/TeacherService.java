@@ -22,9 +22,13 @@ public class TeacherService {
     public void deleteTeacherById(String t_id){
         teacherMapper.deleteTeacher(t_id);
     }
+
+
     public List<Teacher> selectCourseTeacher(String name){
         return teacherMapper.selectCourseTeacher(name);
     }
+
+
     public void updateTeachesRole(String t_id,int c_id,int role){
         teacherMapper.updateTeacherTeachesRole(t_id, c_id, role);
     }

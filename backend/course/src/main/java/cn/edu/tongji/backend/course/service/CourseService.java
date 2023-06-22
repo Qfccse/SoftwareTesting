@@ -54,7 +54,7 @@ public class CourseService {
         if (courseID<420203100 | courseID>420205000){
             code += 1;
         }
-        courseMapper.addCourse(course); //测试时不使用
+        // courseMapper.addCourse(course);
 
         //teach
         teaches.setC_id(courseID);
@@ -64,7 +64,7 @@ public class CourseService {
             code += 2;
         }
 
-        teachesMapper.addTeaches(teaches); //测试时不使用
+        // teachesMapper.addTeaches(teaches); //测试时不使用
         Message message = new Message();
         message.set("course", course);
         message.set("teaches", teaches);

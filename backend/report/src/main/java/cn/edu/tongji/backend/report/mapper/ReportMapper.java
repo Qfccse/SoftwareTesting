@@ -36,4 +36,5 @@ public interface ReportMapper {
     Timestamp selectLabEndTime(int l_id);
     @Select("select student.name from student where s_id=#{s_id}")
     String getStuNameByID(String s_id);
+
 }

@@ -34,45 +34,45 @@
     ]
   },
   {
-    "msg": "1+1+1+1+1+1",
+    "msg": "1，1，1，1，1，1",
     "l_id": 2,
     "s_id": "2053677",
     "status": 1,
     "ReportForms": [
       {
         "rt_id": 7,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       },
       {
         "rt_id": 8,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       },
       {
         "rt_id": 9,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       },
       {
         "rt_id": 10,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       },
       {
         "rt_id": 11,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       },
       {
         "rt_id": 12,
-        "r_id": 41,
+        "r_id": 42,
         "content": "1"
       }
     ]
   },
   {
-    "msg": "2+2+2+2+2+2",
+    "msg": "2，2，2，2，2，2",
     "l_id": 2,
     "s_id": "2053677",
     "status": 1,

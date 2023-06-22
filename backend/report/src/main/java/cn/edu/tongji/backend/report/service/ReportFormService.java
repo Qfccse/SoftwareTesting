@@ -6,6 +6,7 @@ import cn.edu.tongji.backend.report.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -46,13 +47,13 @@ public class ReportFormService {
             List<String> list = Arrays.asList(array);
             if(!list.contains(suffix.toLowerCase())){
                 result.setCode(ERROR_IMAGE_SUFFIX);
-                result.setMsg("文件后缀错误");
+                result.setMsg("拓展名不是图片");
                 return result;
             }
         }
         catch (Exception e)  {
             result.setCode(ERROR_IMAGE_SUFFIX);
-            result.setMsg("文件后缀错误");
+            result.setMsg("拓展名不是图片");
             return result;
         }
 
@@ -73,26 +74,39 @@ public class ReportFormService {
                 if (timestamp > currentTime) {
                     System.out.println("时间超前");
                     result.setCode(ERROR_PATH_FORM);
-                    result.setMsg("保存路径错误");
+                    result.setMsg("时间戳大于系统时间");
                     return result;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("不是时间");
                 result.setCode(ERROR_PATH_FORM);
-                result.setMsg("保存路径错误");
+                result.setMsg("路径不是时间戳");
                 return result;
             }
         } else {
             System.out.println("时间错误");
             result.setCode(ERROR_PATH_FORM);
-            result.setMsg("保存路径错误");
+            result.setMsg("路径不是时间戳");
+            return result;
+        }
+        System.out.println(System.currentTimeMillis());
+        Timestamp sub = new Timestamp(Long.parseLong(timestampString));
+        int r_id = reportFormMapper.selectRid(rf_id);
+        Timestamp st = reportFormMapper.selectLabSt(r_id);
+        Timestamp ed = reportFormMapper.selectLabEd(r_id);
+        System.out.println(rf_id);
+        System.out.println(sub);
+        System.out.println(st);
+        System.out.println(ed);
+        if(sub.before(st)|| sub.after(ed)){
+            result.setMsg("不在提交时间内");
             return result;
         }
 
 
         reportFormMapper.insertIntoReportImages(rf_id,path,file_name);
 
-        result.setMsg("添加成功");
+        result.setMsg("保存成功");
         result.setCode(SUCCESS);
         return result;
     }
